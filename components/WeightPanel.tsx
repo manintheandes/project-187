@@ -15,6 +15,16 @@ export default function WeightPanel() {
     const key = getTodayIso();
     setTodayKey(key);
     setWeight(readWeightFor(key));
+
+    function onStorage(e: StorageEvent) {
+      if (!e.key) return;
+      const k = getTodayIso();
+      if (e.key.includes(`project187 weight ${k}`) || e.key.includes(`project187 calories ${k}`)) {
+        setWeight(readWeightFor(k));
+      }
+    }
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
   }, []);
 
   const current = weight ?? 0;
@@ -26,6 +36,12 @@ export default function WeightPanel() {
     setWeight(val);
     setInput("");
     window.__toastPush?.(`Set weight to ${val}`);
+    // remote sync fire-and-forget
+    fetch(`/api/state`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ date: todayKey, weight: val }),
+    }).catch(() => {});
   }
 
   return (

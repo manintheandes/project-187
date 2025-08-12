@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ensureTodayInitialized, getTodayIso } from "@/lib/storage";
+import { getTodayIso } from "@/lib/storage";
+import { ensureTodayInitialized } from "@/lib/storage";
 import ProgressBar from "@/components/ProgressBar";
 
 // one serving defaults for your six foods
@@ -134,11 +135,31 @@ export default function CaloriePanel() {
     setCalories(c);
     const t = localStorage.getItem(todayKey("totals"));
     setTotals(t ? (JSON.parse(t) as Totals) : EMPTY);
+
+    function onStorage(e: StorageEvent) {
+      if (!e.key) return;
+      const d = getTodayIso();
+      if (e.key === `calories-${d}` || e.key === `totals-${d}` || e.key.startsWith("project187 ")) {
+        const cc = Number(localStorage.getItem(todayKey("calories")) ?? "0");
+        const tt = localStorage.getItem(todayKey("totals"));
+        setCalories(cc);
+        setTotals(tt ? (JSON.parse(tt) as Totals) : EMPTY);
+      }
+    }
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
   }, []);
 
   useEffect(() => {
     localStorage.setItem(todayKey("calories"), String(calories));
     localStorage.setItem(todayKey("totals"), JSON.stringify(totals));
+    // Fire-and-forget remote sync if configured
+    const d = getTodayIso();
+    fetch(`/api/state`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ date: d, calories }),
+    }).catch(() => {});
   }, [calories, totals]);
 
   function addMacros(m: Macros) {
