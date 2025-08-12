@@ -76,7 +76,7 @@ export default function WeightPanel() {
   return (
     <section aria-labelledby="weight-heading">
       {/* Weight bar (horizontal) */}
-      <ProgressBar value={current} max={TARGET} normalColor="bg-[#E5D7A0]" redAtOrAbove={THRESHOLD} />
+      <ProgressBar value={current} max={TARGET} normalColor="bg-[#E5D7A0]" redAtOrAbove={THRESHOLD} className="rounded-lg" />
       <h2 id="weight-heading" className="sr-only">Current Weight</h2>
       <div className="mt-4 md:mt-6 min-h-[120px] md:min-h-[156px]">
         <div className="text-[56px] md:text-[72px] leading-none font-black">
@@ -87,14 +87,14 @@ export default function WeightPanel() {
           <div className="text-[12px] text-black/60 h-[16px]">{weight == null ? "No weight set" : "\u00A0"}</div>
         </div>
       </div>
-      <div className="mt-4 md:mt-6 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+      <div className="mt-4 md:mt-6 grid grid-cols-1 sm:grid-cols-[1fr_auto] items-stretch gap-2 sm:gap-3">
         <label className="sr-only" htmlFor="set-weight">Set weight</label>
         <input
           id="set-weight"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Set weight"
-          className="h-12 box-border w-full sm:w-[360px] px-4 border border-gray-300 rounded-md text-[16px] leading-none appearance-none"
+          className="h-12 box-border w-full px-4 border border-gray-300 rounded-md text-[16px] leading-none appearance-none"
           inputMode="decimal"
         />
         <button

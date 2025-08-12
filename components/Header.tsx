@@ -12,7 +12,7 @@ export default function Header() {
       </h1>
       <p className="mt-1 text-[11px] uppercase tracking-[0.06em] text-black/60 md:text-[12px]">HE</p>
       {/* informational tagline removed by request */}
-      <div className="mt-4 md:mt-6 lg:mt-8 flex items-center gap-4">
+      <div className="hidden md:flex mt-6 lg:mt-8 items-center gap-4">
         <div className="rule flex-1 max-w-[560px]" />
         <div className="rule flex-1" />
       </div>

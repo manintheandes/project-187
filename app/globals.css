@@ -25,10 +25,11 @@ body {
 }
 
 /* Utility classes specific to this project */
-.rule {
-  height: 1px;
-  background: rgba(0,0,0,0.3);
-}
+.rule { height: 1px; background: rgba(0,0,0,0.3); }
+
+/* Tighten form controls alignment on iOS */
+.btn, button { line-height: 1; }
+input { line-height: 1.2; }
 
 .focus-ring:focus-visible {
   outline: 2px solid #000;

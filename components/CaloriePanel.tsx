@@ -257,7 +257,7 @@ export default function CaloriePanel() {
   return (
     <div>
       {/* progress bar (horizontal) */}
-      <ProgressBar value={calories} max={1500} normalColor="bg-[#CAA70A]" redWhenOver={1500} />
+      <ProgressBar value={calories} max={1500} normalColor="bg-[#CAA70A]" redWhenOver={1500} className="rounded-lg" />
 
       {/* big number and captions */}
       <div className="mt-4 md:mt-6 min-h-[120px] md:min-h-[156px]">
@@ -267,11 +267,11 @@ export default function CaloriePanel() {
       </div>
 
       {/* input row */}
-      <div className="mt-3 md:mt-6 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+      <div className="mt-3 md:mt-6 grid grid-cols-1 sm:grid-cols-[1fr_auto] items-stretch gap-2 sm:gap-3">
         <input
           type="text"
           placeholder="Type bagel or yuba or oatmeal or broccoli or bar or tortilla"
-          className="h-12 box-border w-full sm:w-[360px] px-4 border border-gray-300 rounded-md text-[16px] leading-none appearance-none"
+          className="h-12 box-border w-full px-4 border border-gray-300 rounded-md text-[16px] leading-none appearance-none"
           value={calorieInput}
           onChange={(e) => setCalorieInput(e.target.value)}
         />
