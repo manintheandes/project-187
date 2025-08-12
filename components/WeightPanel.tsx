@@ -78,8 +78,8 @@ export default function WeightPanel() {
       {/* Weight bar (horizontal) */}
       <ProgressBar value={current} max={TARGET} normalColor="bg-[#E5D7A0]" redAtOrAbove={THRESHOLD} />
       <h2 id="weight-heading" className="sr-only">Current Weight</h2>
-      <div className="mt-6 min-h-[140px] md:min-h-[156px]">
-        <div className="text-[48px] md:text-[72px] leading-none font-black">
+      <div className="mt-4 md:mt-6 min-h-[120px] md:min-h-[156px]">
+        <div className="text-[56px] md:text-[72px] leading-none font-black">
           {weight == null ? "--" : weight}
         </div>
         <div className="mt-2">

@@ -17,7 +17,7 @@ export default function ProgressBar({ value, max, normalColor, redAtOrAbove, red
     (redWhenOver !== undefined && value > redWhenOver);
 
   return (
-    <div className={`relative w-full h-10 md:h-12 bg-[var(--muted-gray)] rounded overflow-hidden mx-auto ${className ?? ""}`}>
+    <div className={`relative w-full h-8 sm:h-9 md:h-12 bg-[var(--muted-gray)] rounded overflow-hidden mx-auto ${className ?? ""}`}>
       <div
         className={`absolute left-0 top-0 h-full ${hitRed ? "bg-red-500" : normalColor}`}
         style={{ width: `${pct * 100}%`, transition: "width 200ms ease-out" }}

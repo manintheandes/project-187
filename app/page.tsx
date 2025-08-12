@@ -7,9 +7,9 @@ import ToastHost from "@/components/ToastHost";
 export default function Home() {
   return (
     <div className="min-h-screen font-sans text-black bg-white">
-      <div className="mx-auto max-w-[1200px] container-px md:px-8" style={{paddingLeft:32, paddingRight:32}}>
+      <div className="mx-auto max-w-[1200px] px-4 md:px-8">
         <Header />
-        <main className="mt-8 md:mt-12 grid grid-cols-1 gap-5 md:gap-6 lg:grid-cols-2 items-start content-start">
+        <main className="mt-6 md:mt-12 grid grid-cols-1 gap-5 md:gap-6 lg:grid-cols-2 items-start content-start">
           <CaloriePanel />
           <WeightPanel />
         </main>

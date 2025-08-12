@@ -260,14 +260,14 @@ export default function CaloriePanel() {
       <ProgressBar value={calories} max={1500} normalColor="bg-[#CAA70A]" redWhenOver={1500} />
 
       {/* big number and captions */}
-      <div className="mt-6 min-h-[140px] md:min-h-[156px]">
-        <div className="text-7xl font-extrabold">{calories}</div>
+      <div className="mt-4 md:mt-6 min-h-[120px] md:min-h-[156px]">
+        <div className="text-[64px] sm:text-7xl font-extrabold">{calories}</div>
         <div className="mt-2 text-sm font-medium">Daily Calories</div>
         <div className="text-sm text-gray-500 h-[16px]">{remaining} to go</div>
       </div>
 
       {/* input row */}
-      <div className="mt-4 md:mt-6 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+      <div className="mt-3 md:mt-6 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
         <input
           type="text"
           placeholder="Type bagel or yuba or oatmeal or broccoli or bar or tortilla"
