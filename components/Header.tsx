@@ -11,7 +11,7 @@ export default function Header() {
         Project 187
       </h1>
       <p className="mt-1 text-[12px] uppercase tracking-[0.06em] text-black/60">HE</p>
-      <p className="mt-1 text-[12px] text-black/50">Changes sync across devices when deployed with Vercel KV.</p>
+      {/* informational tagline removed by request */}
       <div className="mt-6 md:mt-6 lg:mt-8 flex items-center gap-4">
         <div className="rule flex-1 max-w-[560px]" />
         <div className="rule flex-1" />

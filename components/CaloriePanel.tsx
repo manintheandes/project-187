@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { getTodayIso } from "@/lib/storage";
 import { ensureTodayInitialized } from "@/lib/storage";
 import ProgressBar from "@/components/ProgressBar";
@@ -128,6 +128,8 @@ export default function CaloriePanel() {
   const [calories, setCalories] = useState(0);
   const [totals, setTotals] = useState<Totals>(EMPTY);
   const [summaryOpen, setSummaryOpen] = useState(false);
+  const hasMountedRef = useRef(false);
+  const skipNextPostRef = useRef(false);
 
   useEffect(() => {
     ensureTodayInitialized();
@@ -165,6 +167,8 @@ export default function CaloriePanel() {
           setCalories((prev) => {
             if (prev !== c) {
               localStorage.setItem(todayKey("calories"), String(c));
+              // mark that this change came from remote so we do not echo it back
+              skipNextPostRef.current = true;
               return c;
             }
             return prev;
@@ -185,6 +189,15 @@ export default function CaloriePanel() {
     localStorage.setItem(todayKey("totals"), JSON.stringify(totals));
     // Fire-and-forget remote sync if configured
     const d = getTodayIso();
+    // On first mount or when we just pulled from remote, skip posting to avoid overwriting
+    if (!hasMountedRef.current) {
+      hasMountedRef.current = true;
+      return;
+    }
+    if (skipNextPostRef.current) {
+      skipNextPostRef.current = false;
+      return;
+    }
     fetch(`/api/state`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
