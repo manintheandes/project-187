@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+/* Global theme tokens matching spec */
+:root {
+  --accent-gold: #CAA70A; /* primary gold */
+  --light-gold: #E5D7A0; /* weight bar base */
+  --muted-gray: #E5E5E5; /* track background */
+  --danger-red: #FF0000;
+}
+
+/* Base resets */
+html, body {
+  background: #FFFFFF;
+  color: #000000;
+}
+
+body {
+  font-family: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Mobile spacing helpers */
+.container-px {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* Utility classes specific to this project */
+.rule {
+  height: 1px;
+  background: rgba(0,0,0,0.3);
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+/* iOS Safari input/button alignment quirks */
+input, button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.tracking-tight-h1 {
+  letter-spacing: -0.02em;
+}
