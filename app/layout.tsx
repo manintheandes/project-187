@@ -10,6 +10,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Project 187",
   description: "Daily calories and weight tracker",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
