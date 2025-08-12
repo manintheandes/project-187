@@ -150,6 +150,36 @@ export default function CaloriePanel() {
     return () => window.removeEventListener("storage", onStorage);
   }, []);
 
+  // Poll remote state to reflect updates from other devices
+  useEffect(() => {
+    let cancelled = false;
+    async function pull() {
+      const d = getTodayIso();
+      try {
+        const res = await fetch(`/api/state?date=${encodeURIComponent(d)}`, { cache: "no-store" });
+        if (!res.ok) return;
+        const data = (await res.json()) as { calories?: number };
+        if (cancelled) return;
+        if (typeof data.calories === "number") {
+          const c = data.calories;
+          setCalories((prev) => {
+            if (prev !== c) {
+              localStorage.setItem(todayKey("calories"), String(c));
+              return c;
+            }
+            return prev;
+          });
+        }
+      } catch {}
+    }
+    pull();
+    const id = setInterval(pull, 8000);
+    return () => {
+      cancelled = true;
+      clearInterval(id);
+    };
+  }, []);
+
   useEffect(() => {
     localStorage.setItem(todayKey("calories"), String(calories));
     localStorage.setItem(todayKey("totals"), JSON.stringify(totals));

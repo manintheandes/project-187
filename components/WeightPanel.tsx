@@ -27,6 +27,35 @@ export default function WeightPanel() {
     return () => window.removeEventListener("storage", onStorage);
   }, []);
 
+  // Poll remote state to reflect updates from other devices
+  useEffect(() => {
+    let cancelled = false;
+    async function pull() {
+      const d = getTodayIso();
+      try {
+        const res = await fetch(`/api/state?date=${encodeURIComponent(d)}`, { cache: "no-store" });
+        if (!res.ok) return;
+        const data = (await res.json()) as { weight?: number | null };
+        if (cancelled) return;
+        if (data.weight === null || typeof data.weight === "number") {
+          setWeight((prev) => {
+            if (prev !== data.weight) {
+              writeWeightFor(d, data.weight ?? null);
+              return data.weight ?? null;
+            }
+            return prev;
+          });
+        }
+      } catch {}
+    }
+    pull();
+    const id = setInterval(pull, 8000);
+    return () => {
+      cancelled = true;
+      clearInterval(id);
+    };
+  }, []);
+
   const current = weight ?? 0;
 
   function onSet() {
