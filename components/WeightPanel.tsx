@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProgressBar from "@/components/ProgressBar";
 import { ensureTodayInitialized, getTodayIso, readWeightFor, writeWeightFor } from "@/lib/storage";
 
@@ -25,7 +25,7 @@ export default function WeightPanel() {
     writeWeightFor(todayKey, val);
     setWeight(val);
     setInput("");
-    (window as any).__toastPush?.(`Set weight to ${val}`);
+    window.__toastPush?.(`Set weight to ${val}`);
   }
 
   return (

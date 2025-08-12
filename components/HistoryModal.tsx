@@ -1,10 +1,10 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
+  YMD,
   HistoryRow,
   readAllHistory,
   upsertHistoryRow,
-  DAILY_LIMIT,
   getTodayIso,
   readCaloriesFor,
   writeCaloriesFor,
@@ -29,8 +29,8 @@ export default function HistoryModal() {
   useEffect(() => {
     refresh();
     const onOpen = () => setOpen(true);
-    window.addEventListener("open-history-modal", onOpen as any);
-    return () => window.removeEventListener("open-history-modal", onOpen as any);
+    window.addEventListener("open-history-modal", onOpen);
+    return () => window.removeEventListener("open-history-modal", onOpen);
   }, []);
 
   function addRow() {
@@ -41,7 +41,7 @@ export default function HistoryModal() {
     const weightStr = prompt("Weight for date (optional)", "");
     const calories = Math.max(0, Math.floor(Number(caloriesStr) || 0));
     const weight = weightStr?.trim() ? Number(weightStr) : null;
-    upsertHistoryRow({ date: ymd as any, calories, weight: Number.isFinite(weight!) ? weight! : null });
+    upsertHistoryRow({ date: ymd as YMD, calories, weight: Number.isFinite(weight!) ? weight! : null });
     refresh();
   }
 

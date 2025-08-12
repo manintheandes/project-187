@@ -23,9 +23,9 @@ export default function ToastHost() {
 
   // Expose on window for easy access from panels
   useEffect(() => {
-    (window as any).__toastPush = push;
+    window.__toastPush = push;
     return () => {
-      delete (window as any).__toastPush;
+      delete window.__toastPush;
     };
   }, []);
 
