@@ -68,10 +68,12 @@ function DailySummaryModal({
   open,
   onClose,
   totals,
+  calories,
 }: {
   open: boolean;
   onClose: () => void;
   totals: Totals;
+  calories: number;
 }) {
   useEffect(() => {
     function onEsc(e: KeyboardEvent) {
@@ -95,7 +97,7 @@ function DailySummaryModal({
         <div className="space-y-2 text-lg">
           <div className="flex justify-between">
             <span>Calories</span>
-            <span>{totals.kcal}</span>
+            <span>{calories}</span>
           </div>
           <div className="flex justify-between">
             <span>Protein g</span>
@@ -299,7 +301,7 @@ export default function CaloriePanel() {
         </button>
       </div>
 
-      <DailySummaryModal open={summaryOpen} onClose={() => setSummaryOpen(false)} totals={totals} />
+      <DailySummaryModal open={summaryOpen} onClose={() => setSummaryOpen(false)} totals={totals} calories={calories} />
     </div>
   );
 }
