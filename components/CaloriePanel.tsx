@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { getTodayIso } from "@/lib/storage";
 import { ensureTodayInitialized } from "@/lib/storage";
+import { readCaloriesFor, writeCaloriesFor } from "@/lib/storage";
 import ProgressBar from "@/components/ProgressBar";
 
 // one serving defaults for your six foods
@@ -133,7 +134,8 @@ export default function CaloriePanel() {
 
   useEffect(() => {
     ensureTodayInitialized();
-    const c = Number(localStorage.getItem(todayKey("calories")) ?? "0");
+    const d = getTodayIso();
+    const c = readCaloriesFor(d);
     setCalories(c);
     const t = localStorage.getItem(todayKey("totals"));
     setTotals(t ? (JSON.parse(t) as Totals) : EMPTY);
@@ -141,8 +143,8 @@ export default function CaloriePanel() {
     function onStorage(e: StorageEvent) {
       if (!e.key) return;
       const d = getTodayIso();
-      if (e.key === `calories-${d}` || e.key === `totals-${d}` || e.key.startsWith("project187 ")) {
-        const cc = Number(localStorage.getItem(todayKey("calories")) ?? "0");
+      if (e.key === `totals-${d}` || e.key.includes(`project187 calories ${d}`)) {
+        const cc = readCaloriesFor(d);
         const tt = localStorage.getItem(todayKey("totals"));
         setCalories(cc);
         setTotals(tt ? (JSON.parse(tt) as Totals) : EMPTY);
@@ -166,7 +168,7 @@ export default function CaloriePanel() {
           const c = data.calories;
           setCalories((prev) => {
             if (prev !== c) {
-              localStorage.setItem(todayKey("calories"), String(c));
+              writeCaloriesFor(d, c);
               // mark that this change came from remote so we do not echo it back
               skipNextPostRef.current = true;
               return c;
@@ -185,10 +187,10 @@ export default function CaloriePanel() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem(todayKey("calories"), String(calories));
+    const d = getTodayIso();
+    writeCaloriesFor(d, calories);
     localStorage.setItem(todayKey("totals"), JSON.stringify(totals));
     // Fire-and-forget remote sync if configured
-    const d = getTodayIso();
     // On first mount or when we just pulled from remote, skip posting to avoid overwriting
     if (!hasMountedRef.current) {
       hasMountedRef.current = true;
@@ -244,7 +246,8 @@ export default function CaloriePanel() {
   function handleClearToday() {
     setCalories(0);
     setTotals(EMPTY);
-    localStorage.setItem(todayKey("calories"), "0");
+    const d = getTodayIso();
+    writeCaloriesFor(d, 0);
     localStorage.setItem(todayKey("totals"), JSON.stringify(EMPTY));
     setNote("Cleared today");
   }

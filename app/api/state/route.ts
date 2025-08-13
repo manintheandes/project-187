@@ -3,7 +3,7 @@ import { NextRequest } from "next/server";
 const KV_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
 const KV_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
 
-type State = { calories: number; weight: number | null };
+type State = { calories?: number; weight?: number | null };
 
 function caloriesKey(date: string) {
   return `project187:calories:${date}`;
@@ -38,10 +38,10 @@ export async function GET(req: NextRequest) {
   if (!KV_URL || !KV_TOKEN) return new Response("remote sync not configured", { status: 501 });
 
   const [c, w] = await Promise.all([kvGet(caloriesKey(date)), kvGet(weightKey(date))]);
-  const state: State = {
-    calories: Number(c || 0) || 0,
-    weight: w == null ? null : Number(w),
-  };
+  const state: State = {};
+  if (c != null) state.calories = Number(c);
+  if (w === "") state.weight = null;
+  else if (w != null) state.weight = Number(w);
   return Response.json(state, { headers: { "Cache-Control": "no-store" } });
 }
 
